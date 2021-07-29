@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Organisation Hall of Fame
+name: hall-of-fame
+version: 0.1.0

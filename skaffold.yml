@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+build:
+  artifacts:
+  - image: hall-of-fame
+  googleCloudBuild:
+    projectId: gomediasandbox
+deploy:
+  helm:
+    releases:
+    - name: hall-of-fame
+      chartPath: charts
+      artifactOverrides:
+        image: hall-of-fame
