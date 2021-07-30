@@ -1,4 +1,4 @@
-package models
+package persistence
 
 import (
 	"database/sql"
@@ -76,7 +76,7 @@ func (db *database) migrateDB() {
 		fmt.Printf("Failed to migrate: %s", err)
 	}
 
-	m, err := migrate.NewWithDatabaseInstance("file://models/migrations", "postgres", driver)
+	m, err := migrate.NewWithDatabaseInstance("file://persistence/migrations", "postgres", driver)
 
 	if err != nil {
 		fmt.Printf("Failed to migrate: %s", err)

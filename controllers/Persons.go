@@ -6,16 +6,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/etashkinov/hall-of-fame/models"
+	"github.com/etashkinov/hall-of-fame/persistence"
 	"github.com/etashkinov/hall-of-fame/validator"
 )
 
-type CreatePersonRequest struct {
+type PersonCreateRequest struct {
 	Name string `json:"name" example:"Homer Simpson"`
+}
+type PersonUpdateRequest struct {
+	Name        string `json:"name" example:"Homer Simpson"`
+	Description string `json:"description" example:"Fat bold white guy"`
 }
 
 func CreatePerson(c *gin.Context) {
-	var request CreatePersonRequest
+	var request PersonCreateRequest
 
 	bindJSON(c, &request)
 
@@ -24,28 +28,52 @@ func CreatePerson(c *gin.Context) {
 		return
 	}
 
-	person, err := models.CreatePerson(request.Name)
+	person, err := persistence.CreatePerson(request.Name)
 
+	response(c, person, err)
+}
+
+func UpdatePerson(c *gin.Context) {
+	personId, err := getPersonId(c)
 	if err != nil {
 		serverError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, person)
+	var request PersonUpdateRequest
+	bindJSON(c, &request)
+
+	person, err := persistence.UpdatePerson(personId, request.Name, request.Description)
+
+	response(c, person, err)
+}
+
+func GetPersons(c *gin.Context) {
+	persons, err := persistence.GetPersons()
+	response(c, persons, err)
 }
 
 func GetPerson(c *gin.Context) {
-	personId, err := strconv.Atoi(c.Param("id"))
+	personId, err := getPersonId(c)
 	if err != nil {
 		serverError(c, err)
 		return
 	}
 
-	person, err := models.GetPerson(int64(personId))
+	person, err := persistence.GetPerson(personId)
+	response(c, person, err)
+}
+
+func getPersonId(c *gin.Context) (personId int64, err error) {
+	param, err := strconv.Atoi(c.Param("id"))
+	return int64(param), err
+}
+
+func response(c *gin.Context, body interface{}, err error) {
 	if err != nil {
 		serverError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, person)
+	c.JSON(http.StatusOK, body)
 }

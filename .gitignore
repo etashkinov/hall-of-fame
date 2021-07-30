@@ -15,3 +15,5 @@
 # vendor/
 config.json
 .vscode
+
+__debug_bin

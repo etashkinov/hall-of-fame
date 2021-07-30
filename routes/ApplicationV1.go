@@ -19,6 +19,8 @@ func ApplicationV1Router(router *gin.Engine) {
 		v1Medicines := v1.Group("/persons")
 		{
 			v1Medicines.POST("", controllers.CreatePerson)
+			v1Medicines.GET("", controllers.GetPersons)
+			v1Medicines.PUT("/:id", controllers.UpdatePerson)
 			v1Medicines.GET("/:id", controllers.GetPerson)
 		}
 	}
