@@ -19,7 +19,7 @@ func main() {
 
 	initialGinConfig(router)
 	router.Use(middlewares.GinBodyLogMiddleware)
-	routes.ApplicationV1Router(router)
+	routes.ApplicationRouter(router)
 	startServer(router)
 
 }

@@ -12,7 +12,7 @@ const (
 	LEVEL_GURU     Level = "GURU"
 )
 
-type Skill struct {
+type Dictionary struct {
 	Id          int64
 	Name        string
 	Description string
@@ -21,49 +21,31 @@ type Skill struct {
 type PersonSkill struct {
 	Id        int64
 	PersionId int64
-	Skill     Skill
+	Skill     Dictionary
 	Since     time.Time
 	Level     Level
-}
-
-type Achievement struct {
-	Id          int64
-	Name        string
-	Description string
 }
 
 type PersonAchievement struct {
 	Id          int64
 	PersionId   int64
-	Achievement Achievement
+	Achievement Dictionary
 	Since       time.Time
-	Description string
-}
-
-type Expertise struct {
-	Id          int64
-	Name        string
 	Description string
 }
 
 type PersonExpertise struct {
 	Id        int64
 	PersionId int64
-	Expertise Expertise
+	Expertise Dictionary
 	Since     time.Time
 	Level     Level
-}
-
-type Position struct {
-	Id          int64
-	Name        string
-	Description string
 }
 
 type PersonPosition struct {
 	Id          int64
 	PersionId   int64
-	Position    Position
+	Position    Dictionary
 	TeamId      string
 	Since       time.Time
 	Till        time.Time

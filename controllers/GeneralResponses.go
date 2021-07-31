@@ -23,3 +23,12 @@ func serverError(c *gin.Context, err error) {
 	c.JSON(http.StatusInternalServerError,
 		GeneralResponse{Messages: []string{"We are working to improve the flow of this request."}})
 }
+
+func ok(c *gin.Context, body interface{}, err error) {
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, body)
+}
