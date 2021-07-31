@@ -7,6 +7,8 @@ import (
 )
 
 func ApplicationRouter(router *gin.Engine) {
+	router.GET("", func(c *gin.Context) {})
+
 	persons := router.Group("/persons")
 	{
 		persons.POST("", controllers.CreatePerson)

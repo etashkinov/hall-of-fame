@@ -1,12 +1,23 @@
 FROM golang:1.16 as builder
-COPY main.go .
+
+WORKDIR /build
+
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+
+COPY . .
 # `skaffold debug` sets SKAFFOLD_GO_GCFLAGS to disable compiler optimizations
 ARG SKAFFOLD_GO_GCFLAGS
-RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /app main.go
+# CGO has to be disabled for alpine
+ENV CGO_ENABLED=0
+RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /app
 
 FROM alpine:3.10
-# Define GOTRACEBACK to mark this container as using the Go language runtime
-# for `skaffold debug` (https://skaffold.dev/docs/workflows/debug/).
+RUN apk --no-cache add tzdata
+WORKDIR /
 ENV GOTRACEBACK=single
-CMD ["./app"]
-COPY --from=builder /app .
+COPY --from=builder /app /app
+COPY --from=builder /build/config.json /config.json
+COPY --from=builder /build/migrations /migrations
+ENTRYPOINT ["/app"]

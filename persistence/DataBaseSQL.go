@@ -76,7 +76,7 @@ func (db *database) migrateDB() {
 		fmt.Printf("Failed to migrate: %s", err)
 	}
 
-	m, err := migrate.NewWithDatabaseInstance("file://persistence/migrations", "postgres", driver)
+	m, err := migrate.NewWithDatabaseInstance("file://migrations", "postgres", driver)
 
 	if err != nil {
 		fmt.Printf("Failed to migrate: %s", err)

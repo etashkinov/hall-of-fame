@@ -3,3 +3,9 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image: hall-of-fame
+
+service:
+  name: go-app
+  type: NodePort
+  externalPort: 80
+  internalPort: 8080
