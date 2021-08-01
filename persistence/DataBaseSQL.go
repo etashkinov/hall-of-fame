@@ -1,10 +1,10 @@
 package persistence
 
 import (
-	"database/sql"
 	"fmt"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/viper"
@@ -35,8 +35,8 @@ var (
 
 // Nodes read and write in database
 type database struct {
-	Read  *sql.DB
-	Write *sql.DB
+	Read  *sqlx.DB
+	Write *sqlx.DB
 }
 
 func init() {
@@ -50,9 +50,9 @@ func init() {
 
 // Up new mysql database connection
 
-func connect(config *dbConfig) (connection *sql.DB, err error) {
+func connect(config *dbConfig) (connection *sqlx.DB, err error) {
 	connectString := fmt.Sprintf("host=%s port=%s user=%s  password=%s sslmode=disable", config.Hostname, config.Port, config.Username, config.Password)
-	connection, err = sql.Open("postgres", connectString)
+	connection, err = sqlx.Connect("postgres", connectString)
 	connection.SetConnMaxLifetime(time.Second * 10)
 	return
 }
@@ -71,7 +71,7 @@ func (db *database) upConnection(info *infoDatabase) (err error) {
 }
 
 func (db *database) migrateDB() {
-	driver, err := postgres.WithInstance(db.Write, &postgres.Config{})
+	driver, err := postgres.WithInstance(db.Write.DB, &postgres.Config{})
 	if err != nil {
 		fmt.Printf("Failed to migrate: %s", err)
 	}

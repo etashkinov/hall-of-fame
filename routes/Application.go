@@ -13,15 +13,29 @@ func ApplicationRouter(router *gin.Engine) {
 	{
 		persons.POST("", controllers.CreatePerson)
 		persons.GET("", controllers.GetPersons)
-		persons.PUT("/:id", controllers.UpdatePerson)
-		persons.GET("/:id", controllers.GetPerson)
 	}
 
-	dicts := router.Group("/dictionaries")
+	person := persons.Group("/:id")
 	{
-		dicts.POST("/:type", controllers.CreateDictionary)
-		dicts.GET("/:type", controllers.GetDictionaries)
-		dicts.PUT("/:type/:id", controllers.UpdateDictionary)
-		dicts.DELETE("/:type/:id", controllers.DeleteDictionary)
+		person.PUT("", controllers.UpdatePerson)
+		person.GET("", controllers.GetPerson)
+	}
+
+	skills := person.Group("/skills")
+	{
+		skills.GET("", controllers.GetPersonSkills)
+		skills.POST("", controllers.AddPersonSkill)
+	}
+
+	dicts := router.Group("/dictionaries/:type")
+	{
+		dicts.POST("", controllers.CreateDictionary)
+		dicts.GET("", controllers.GetDictionaries)
+	}
+
+	dict := dicts.Group("/:id")
+	{
+		dict.PUT("", controllers.UpdateDictionary)
+		dict.DELETE("", controllers.DeleteDictionary)
 	}
 }
