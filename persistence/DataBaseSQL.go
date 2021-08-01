@@ -1,6 +1,7 @@
 package persistence
 
 import (
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -83,4 +84,20 @@ func (db *database) migrateDB() {
 	}
 
 	m.Steps(2)
+}
+
+func (db database) insertForId(query string, args ...interface{}) (int64, error) {
+	row := db.Write.QueryRow(fmt.Sprintf("%s RETURNING id;", query), args...)
+
+	return getId(row)
+}
+
+func getId(row *sql.Row) (id int64, err error) {
+	err = row.Scan(&id)
+	return
+}
+
+func (db database) insertForResult(result *interface{}, query string, args ...interface{}) error {
+	row := db.Write.QueryRowx(fmt.Sprintf("%s RETURNING *;", query), args)
+	return row.Scan(result)
 }

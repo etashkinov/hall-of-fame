@@ -9,7 +9,9 @@ import (
 func ApplicationRouter(router *gin.Engine) {
 	router.GET("", func(c *gin.Context) {})
 
-	persons := router.Group("/persons")
+	api := router.Group("/api")
+
+	persons := api.Group("/persons")
 	{
 		persons.POST("", controllers.CreatePerson)
 		persons.GET("", controllers.GetPersons)
@@ -19,15 +21,22 @@ func ApplicationRouter(router *gin.Engine) {
 	{
 		person.PUT("", controllers.UpdatePerson)
 		person.GET("", controllers.GetPerson)
+		person.DELETE("", controllers.DeletePerson)
 	}
 
-	skills := person.Group("/skills")
+	personDicts := person.Group("/:type")
 	{
-		skills.GET("", controllers.GetPersonSkills)
-		skills.POST("", controllers.AddPersonSkill)
+		personDicts.GET("", controllers.GetPersonDicts)
+		personDicts.POST("", controllers.AddPersonDict)
 	}
 
-	dicts := router.Group("/dictionaries/:type")
+	personDict := personDicts.Group("/:dictId")
+	{
+		personDict.PUT("", controllers.UpdatePersonDict)
+		personDict.DELETE("", controllers.DeletePersonDict)
+	}
+
+	dicts := api.Group("/dictionaries/:type")
 	{
 		dicts.POST("", controllers.CreateDictionary)
 		dicts.GET("", controllers.GetDictionaries)

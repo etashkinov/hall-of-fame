@@ -57,3 +57,10 @@ func GetPerson(c *gin.Context) {
 	person, err := persistence.GetPerson(personId)
 	ok(c, person, err)
 }
+
+func DeletePerson(c *gin.Context) {
+	personId, _ := getId(c)
+
+	err := persistence.DeletePerson(personId)
+	ok(c, nil, err)
+}

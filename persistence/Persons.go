@@ -54,6 +54,16 @@ func GetPersons() (persons []Person, err error) {
 	return
 }
 
+func DeletePerson(id int64) error {
+	DeletePersonPositions(id)
+	DeletePersonAchievements(id)
+	DeletePersonExpertises(id)
+	DeletePersonSkills(id)
+
+	_, err := db.Write.Exec("DELETE FROM persons WHERE id = $1", id)
+	return err
+}
+
 func scanPersons(row *sql.Rows) (person Person, err error) {
 	err = row.Scan(&person.Id, &person.Name, &person.Description, &person.CreatedAt, &person.UpdatedAt)
 	return

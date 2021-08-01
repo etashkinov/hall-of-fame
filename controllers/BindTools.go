@@ -18,7 +18,11 @@ func bindJSON(c *gin.Context, request interface{}) (err error) {
 	return
 }
 
-func getId(c *gin.Context) (id int64, err error) {
-	param, err := strconv.Atoi(c.Param("id"))
+func getId(c *gin.Context) (int64, error) {
+	return getIntParam(c, "id")
+}
+
+func getIntParam(c *gin.Context, name string) (int64, error) {
+	param, err := strconv.Atoi(c.Param(name))
 	return int64(param), err
 }
