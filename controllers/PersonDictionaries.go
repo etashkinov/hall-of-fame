@@ -38,7 +38,7 @@ func add(c *gin.Context, personId int64, dictType string) (dict interface{}, err
 	case "expertises":
 		return persistence.AddPersonExpertise(personId, request.DictId, request.Since, request.Level)
 	case "positions":
-		return persistence.AddPersonPosition(personId, request.DictId, request.TeamId, request.Since, request.Till, request.Description)
+		return persistence.AddPersonPosition(personId, request.DictId, request.TeamId, request.Since, request.Description)
 	}
 
 	return nil, unknownDictType(dictType)

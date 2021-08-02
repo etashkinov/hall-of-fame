@@ -3,6 +3,7 @@ module github.com/etashkinov/hall-of-fame
 go 1.16
 
 require (
+	cloud.google.com/go/storage v1.16.0
 	github.com/aviddiviner/gin-limit v0.0.0-20170918012823-43b5f79762c1
 	github.com/gbrayhan/microservices-go v1.0.1 // indirect
 	github.com/gin-contrib/cors v1.3.1

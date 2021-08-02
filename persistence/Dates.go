@@ -15,6 +15,10 @@ type Date struct {
 }
 
 func (date Date) Format() string {
+	if (date.Year == 0 && date.Month == 0 && date.Day == 0) {
+		return ""
+	}
+
 	return string(fmt.Sprintf("%04d-%02d-%02d", date.Year, date.Month, date.Day))
 }
 

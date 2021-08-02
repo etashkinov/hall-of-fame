@@ -1,11 +1,11 @@
 package persistence
 
-func AddPersonPosition(personId int64, positionId int64, teamId int64, since Date, till Date, description string) (position PersonPosition, err error) {
+func AddPersonPosition(personId int64, positionId int64, teamId int64, since Date, description string) (position PersonPosition, err error) {
 	query := `
-		INSERT INTO person_positions (person_id, position_id, team_id, since, till, description) 
-		VALUES ($1, $2, $3, $4)`
+		INSERT INTO person_positions (person_id, position_id, team_id, since, description) 
+		VALUES ($1, $2, $3, $4, $5)`
 
-	id, err := db.insertForId(query, personId, positionId, teamId, since, till, description)
+	id, err := db.insertForId(query, personId, positionId, teamId, since, description)
 
 	if err == nil {
 		position, err = getPersonPosition(id)

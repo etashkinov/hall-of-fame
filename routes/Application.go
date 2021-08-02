@@ -9,40 +9,46 @@ import (
 func ApplicationRouter(router *gin.Engine) {
 	router.GET("", func(c *gin.Context) {})
 
-	api := router.Group("/api")
+	api := router.Group("api")
 
-	persons := api.Group("/persons")
+	persons := api.Group("persons")
 	{
 		persons.POST("", controllers.CreatePerson)
 		persons.GET("", controllers.GetPersons)
 	}
 
-	person := persons.Group("/:id")
+	person := persons.Group(":id")
 	{
 		person.PUT("", controllers.UpdatePerson)
 		person.GET("", controllers.GetPerson)
 		person.DELETE("", controllers.DeletePerson)
 	}
 
-	personDicts := person.Group("/:type")
+	image := person.Group("image.png")
+	{
+		image.PUT("", controllers.UploadImage)
+		image.GET("", controllers.GetImage)
+	}
+
+	personDicts := person.Group(":type")
 	{
 		personDicts.GET("", controllers.GetPersonDicts)
 		personDicts.POST("", controllers.AddPersonDict)
 	}
 
-	personDict := personDicts.Group("/:dictId")
+	personDict := personDicts.Group(":dictId")
 	{
 		personDict.PUT("", controllers.UpdatePersonDict)
 		personDict.DELETE("", controllers.DeletePersonDict)
 	}
 
-	dicts := api.Group("/dictionaries/:type")
+	dicts := api.Group("dictionaries/:type")
 	{
 		dicts.POST("", controllers.CreateDictionary)
 		dicts.GET("", controllers.GetDictionaries)
 	}
 
-	dict := dicts.Group("/:id")
+	dict := dicts.Group(":id")
 	{
 		dict.PUT("", controllers.UpdateDictionary)
 		dict.DELETE("", controllers.DeleteDictionary)

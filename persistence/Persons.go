@@ -2,6 +2,8 @@ package persistence
 
 import (
 	"database/sql"
+	"fmt"
+	"mime/multipart"
 	"time"
 )
 
@@ -72,4 +74,12 @@ func scanPersons(row *sql.Rows) (person Person, err error) {
 func scanPerson(row *sql.Row) (person Person, err error) {
 	err = row.Scan(&person.Id, &person.Name, &person.Description, &person.CreatedAt, &person.UpdatedAt)
 	return
+}
+
+func UploadPersonImage(personId int64, file multipart.File) error {
+	return uploadFile("persons", fmt.Sprintf("%d.png", personId), file)
+}
+
+func GetPersonImage(personId int64) ([]byte, error) {
+	return downloadFile("persons", fmt.Sprintf("%d.png", personId))
 }

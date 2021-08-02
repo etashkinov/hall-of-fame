@@ -25,7 +25,7 @@ CREATE TABLE achievements (
 CREATE TABLE person_achievements (
   id SERIAL PRIMARY KEY,
   person_id BIGINT REFERENCES persons(id) NOT NULL,
-  achievements BIGINT REFERENCES achievements(id) NOT NULL,
+  achievement_id BIGINT REFERENCES achievements(id) NOT NULL,
   since DATE NOT NULL,
   description TEXT
 );

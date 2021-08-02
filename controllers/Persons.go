@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/etashkinov/hall-of-fame/persistence"
@@ -63,4 +65,26 @@ func DeletePerson(c *gin.Context) {
 
 	err := persistence.DeletePerson(personId)
 	ok(c, nil, err)
+}
+
+func UploadImage(c *gin.Context) {
+	personId, _ := getId(c)
+	f, _ := c.FormFile("file")
+	file, _ := f.Open()
+
+	err := persistence.UploadPersonImage(personId, file)
+	ok(c, nil, err)
+}
+
+func GetImage(c *gin.Context) {
+	personId, _ := getId(c)
+
+	data, err := persistence.GetPersonImage(personId)
+
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+
+	c.Data(http.StatusOK, "image/png/", data)
 }
